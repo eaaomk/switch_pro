@@ -11,10 +11,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 
 
-const double _kSwitchMinSize = kMinInteractiveDimension - 8.0;
-const double _kSwitchHeight = _kSwitchMinSize + 8.0;
-const double _kSwitchHeightCollapsed = _kSwitchMinSize;
-
 enum _SwitchType { material, adaptive }
 
 /// A material design switch.
@@ -46,14 +42,16 @@ class SwitchPro extends StatelessWidget {
    final double kTrackHeight;
    final double kTrackWidth;
    final double kThumbRadius;
-
+   final double kSwitchHeight;
+   final double kSwitchHeightCollapsed;
+  final double kSwitchMinSize;
 
   double kTrackRadius(){
     return kTrackHeight / 2.0;
   }
 
   double kSwitchWidth(){
-    return kTrackWidth - 2 * kTrackRadius() + _kSwitchMinSize;
+    return kTrackWidth - 2 * kTrackRadius() + kSwitchMinSize;
   }
 
   /// Creates a material design switch.
@@ -72,6 +70,9 @@ class SwitchPro extends StatelessWidget {
     this.kTrackHeight = 14.0,
     this.kTrackWidth = 33.0,
     this.kThumbRadius = 10.0,
+    this.kSwitchHeight = 48.0,
+    this.kSwitchHeightCollapsed = 48.0,
+    this.kSwitchMinSize = 48.0,
     required this.value,
     required this.onChanged,
     this.activeColor,
@@ -119,6 +120,9 @@ class SwitchPro extends StatelessWidget {
     this.kTrackHeight = 14.0,
     this.kTrackWidth = 33.0,
     this.kThumbRadius = 10.0,
+    this.kSwitchHeight = 48.0,
+    this.kSwitchHeightCollapsed = 48.0,
+    this.kSwitchMinSize = 48.0,
     required this.value,
     required this.onChanged,
     this.activeColor,
@@ -375,9 +379,9 @@ class SwitchPro extends StatelessWidget {
         ?? theme.materialTapTargetSize;
     switch (effectiveMaterialTapTargetSize) {
       case MaterialTapTargetSize.padded:
-        return Size(kSwitchWidth(), _kSwitchHeight);
+        return Size(kSwitchWidth(), kSwitchHeight);
       case MaterialTapTargetSize.shrinkWrap:
-        return  Size(kSwitchWidth(), _kSwitchHeightCollapsed);
+        return  Size(kSwitchWidth(), kSwitchHeightCollapsed);
     }
   }
 
@@ -424,7 +428,7 @@ class SwitchPro extends StatelessWidget {
       overlayColor: overlayColor,
       splashRadius: splashRadius,
       focusNode: focusNode,
-      autofocus: autofocus, kTrackRadius: kTrackRadius(), kThumbRadius: kThumbRadius, kTrackHeight: kTrackHeight,
+      autofocus: autofocus, kTrackRadius: kTrackRadius(), kThumbRadius: kThumbRadius, kTrackHeight: kTrackHeight, kSwitchMinSize: kSwitchMinSize,
     );
   }
 
@@ -483,7 +487,7 @@ class _MaterialSwitch extends StatefulWidget {
     this.overlayColor,
     this.splashRadius,
     this.focusNode,
-    this.autofocus = false, required this.kTrackRadius, required this.kTrackHeight, required this.kThumbRadius,
+    this.autofocus = false, required this.kTrackRadius, required this.kTrackHeight, required this.kThumbRadius,required this.kSwitchMinSize,
   })  : assert(dragStartBehavior != null),
         assert(activeThumbImage != null || onActiveThumbImageError == null),
         assert(inactiveThumbImage != null || onInactiveThumbImageError == null),
@@ -517,6 +521,8 @@ class _MaterialSwitch extends StatefulWidget {
   final double kTrackHeight;
 
   final double kThumbRadius;
+
+  final double kSwitchMinSize;
 
   @override
   State<StatefulWidget> createState() => _MaterialSwitchState();
@@ -621,7 +627,7 @@ class _MaterialSwitchState extends State<_MaterialSwitch> with TickerProviderSta
     });
   }
 
-  double get _trackInnerLength => widget.size.width - _kSwitchMinSize;
+  double get _trackInnerLength => widget.size.width - widget.kSwitchMinSize;
 
   void _handleDragStart(DragStartDetails details) {
     if (isInteractive)
