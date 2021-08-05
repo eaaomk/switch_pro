@@ -41,7 +41,7 @@ enum _SwitchType { material, adaptive }
 ///  * [Radio], for selecting among a set of explicit values.
 ///  * [Slider], for selecting a value in a range.
 ///  * <https://material.io/design/components/selection-controls.html#switches>
-class Switch extends StatelessWidget {
+class SwitchPro extends StatelessWidget {
 
    final double kTrackHeight;
    final double kTrackWidth;
@@ -67,7 +67,7 @@ class Switch extends StatelessWidget {
   ///
   /// * [value] determines whether this switch is on or off.
   /// * [onChanged] is called when the user toggles the switch on or off.
-  const Switch({
+  const SwitchPro({
     Key? key,
     this.kTrackHeight = 14.0,
     this.kTrackWidth = 33.0,
@@ -114,7 +114,7 @@ class Switch extends StatelessWidget {
   /// [onInactiveThumbImageError], [materialTapTargetSize].
   ///
   /// The target platform is based on the current [Theme]: [ThemeData.platform].
-  const Switch.adaptive({
+  const SwitchPro.adaptive({
     Key? key,
     this.kTrackHeight = 14.0,
     this.kTrackWidth = 33.0,
