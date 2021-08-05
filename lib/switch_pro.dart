@@ -1,6 +1,6 @@
 library switch_pro;
 
-// Copyright 2014 The Flutter Authors. All rights reserved.
+// Copyright 2021 The Flutter Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
@@ -41,18 +41,29 @@ class SwitchPro extends StatelessWidget {
 
    final double kTrackHeight;
    final double kTrackWidth;
-   final double kThumbRadius;
-   final double kSwitchHeight;
-   final double kSwitchHeightCollapsed;
-  final double kSwitchMinSize;
 
-  double kTrackRadius(){
-    return kTrackHeight / 2.0;
-  }
 
-  double kSwitchWidth(){
-    return kTrackWidth - 2 * kTrackRadius() + kSwitchMinSize;
-  }
+   double kThumbRadius(){
+     return kTrackHeight / 2.0-1;
+   }
+
+   ///获得控件的圆角半径
+   double kTrackRadius(){
+     return kTrackHeight / 2.0;
+   }
+   ///获得开关圆的宽度
+   double kSwitchWidth(){
+     return  kTrackWidth - 2 * kTrackRadius() + 2 * kRadialReactionRadius;
+   }
+
+   double kSwitchHeight(){
+     return 2 * kRadialReactionRadius + 8.0;
+   }
+
+   double kSwitchHeightCollapsed(){
+     return  2 * kRadialReactionRadius;
+   }
+
 
   /// Creates a material design switch.
   ///
@@ -69,10 +80,6 @@ class SwitchPro extends StatelessWidget {
     Key? key,
     this.kTrackHeight = 14.0,
     this.kTrackWidth = 33.0,
-    this.kThumbRadius = 10.0,
-    this.kSwitchHeight = 48.0,
-    this.kSwitchHeightCollapsed = 48.0,
-    this.kSwitchMinSize = 48.0,
     required this.value,
     required this.onChanged,
     this.activeColor,
@@ -119,10 +126,6 @@ class SwitchPro extends StatelessWidget {
     Key? key,
     this.kTrackHeight = 14.0,
     this.kTrackWidth = 33.0,
-    this.kThumbRadius = 10.0,
-    this.kSwitchHeight = 48.0,
-    this.kSwitchHeightCollapsed = 48.0,
-    this.kSwitchMinSize = 48.0,
     required this.value,
     required this.onChanged,
     this.activeColor,
@@ -379,9 +382,9 @@ class SwitchPro extends StatelessWidget {
         ?? theme.materialTapTargetSize;
     switch (effectiveMaterialTapTargetSize) {
       case MaterialTapTargetSize.padded:
-        return Size(kSwitchWidth(), kSwitchHeight);
+        return Size(kSwitchWidth(), kSwitchHeight());
       case MaterialTapTargetSize.shrinkWrap:
-        return  Size(kSwitchWidth(), kSwitchHeightCollapsed);
+        return  Size(kSwitchWidth(), kSwitchHeightCollapsed());
     }
   }
 
@@ -428,7 +431,7 @@ class SwitchPro extends StatelessWidget {
       overlayColor: overlayColor,
       splashRadius: splashRadius,
       focusNode: focusNode,
-      autofocus: autofocus, kTrackRadius: kTrackRadius(), kThumbRadius: kThumbRadius, kTrackHeight: kTrackHeight, kSwitchMinSize: kSwitchMinSize,
+      autofocus: autofocus, kTrackRadius: kTrackRadius(), kThumbRadius: kThumbRadius(), kTrackHeight: kTrackHeight,
     );
   }
 
@@ -487,7 +490,7 @@ class _MaterialSwitch extends StatefulWidget {
     this.overlayColor,
     this.splashRadius,
     this.focusNode,
-    this.autofocus = false, required this.kTrackRadius, required this.kTrackHeight, required this.kThumbRadius,required this.kSwitchMinSize,
+    this.autofocus = false, required this.kTrackRadius, required this.kTrackHeight, required this.kThumbRadius,
   })  : assert(dragStartBehavior != null),
         assert(activeThumbImage != null || onActiveThumbImageError == null),
         assert(inactiveThumbImage != null || onInactiveThumbImageError == null),
@@ -521,8 +524,6 @@ class _MaterialSwitch extends StatefulWidget {
   final double kTrackHeight;
 
   final double kThumbRadius;
-
-  final double kSwitchMinSize;
 
   @override
   State<StatefulWidget> createState() => _MaterialSwitchState();
@@ -627,7 +628,7 @@ class _MaterialSwitchState extends State<_MaterialSwitch> with TickerProviderSta
     });
   }
 
-  double get _trackInnerLength => widget.size.width - widget.kSwitchMinSize;
+  double get _trackInnerLength => widget.size.width - 2.0 * kRadialReactionRadius;
 
   void _handleDragStart(DragStartDetails details) {
     if (isInteractive)
