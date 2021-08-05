@@ -1,6 +1,10 @@
 # switch_pro
 
-flutter switch
+flutter switch Pro Version
+
+#example:
+
+SwitchPro(.......),
 
 ## Getting Started
 
